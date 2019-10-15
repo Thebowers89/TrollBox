@@ -1,0 +1,15 @@
+name: TrollBox
+author: Kerlab
+version: "null"
+api-version: 1.14
+main: TrollBox.MainClass
+commands:
+  tarrow:
+    usage: /tarrow <target> [speed] [instant_kill]
+    description: Launches a tracking arrow at the specified target. WARNING a speed of 5 or greater usually results in death.
+  whatsthis:
+    usage: /whatsthis [duration] or /whatsthis [all/list]
+    description: Just replaces certain characters in a players message with other characters. Commonly refered to a curse.
+  tntscare:
+    usage: /tntscare <target>
+    description: Summons harmless tnt at the specified target.
