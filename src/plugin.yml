@@ -1,7 +1,7 @@
 name: TrollBox
 author: Kerlab
 version: "null"
-api-version: 1.14
+api-version: 1.15
 main: TrollBox.MainClass
 commands:
   tarrow:
@@ -13,3 +13,6 @@ commands:
   tntscare:
     usage: /tntscare <target>
     description: Summons harmless tnt at the specified target.
+  ezcreload:
+    usage: /ezcreload
+    description: Reloads the EasyCommands commands file.
