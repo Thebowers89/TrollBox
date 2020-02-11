@@ -33,13 +33,13 @@ public class CommandEvent implements Listener, CommandExecutor {
         String command = e.getMessage().substring(1);
         if (commands.containsKey(command)) {
             e.setCancelled(true);
-            String[] message = commands.get(command).split(":");
-            System.out.println(message);
-            String prefix = message[0];
+            String message = commands.get(command);
+            String prefix = message.substring(0,3);
+            String output = message.substring(4);
             if (prefix.equals("msg")) {
-                e.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', message[1]));
+                e.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', output));
             } else if (prefix.equals("cmd")) {
-                e.getPlayer().performCommand(message[1]);
+                e.getPlayer().performCommand(output);
             }
 
         }
