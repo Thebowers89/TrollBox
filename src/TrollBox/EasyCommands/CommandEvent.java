@@ -1,6 +1,7 @@
 package TrollBox.EasyCommands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,12 +22,26 @@ public class CommandEvent implements Listener, CommandExecutor {
         reload();
     }
 
+    /*
+        PREFIXES:
+            msg:
+            cmd:
+     */
+
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
         String command = e.getMessage().substring(1);
         if (commands.containsKey(command)) {
             e.setCancelled(true);
-            e.getPlayer().sendMessage(commands.get(command));
+            String[] message = commands.get(command).split(":");
+            System.out.println(message);
+            String prefix = message[0];
+            if (prefix.equals("msg")) {
+                e.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', message[1]));
+            } else if (prefix.equals("cmd")) {
+                e.getPlayer().performCommand(message[1]);
+            }
+
         }
     }
 

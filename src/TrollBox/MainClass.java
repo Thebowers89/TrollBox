@@ -24,7 +24,7 @@ public class MainClass extends JavaPlugin {
         registerCommands();
         registerEvents();
 
-        //Bukkit.getScheduler().runTaskTimer(this, ar, 0, 1);
+        Bukkit.getScheduler().runTaskTimer(this, ar, 0, 1);
     }
 
     public void onDisable() {
@@ -32,9 +32,9 @@ public class MainClass extends JavaPlugin {
     }
 
     private void registerCommands() {
-        //getCommand("tarrow").setExecutor(new TArrowCommand());
-        //getCommand("whatsthis").setExecutor(new WhatsThisCommand());
-        //getCommand("tntscare").setExecutor(new TNTScareCommand());
+        getCommand("tarrow").setExecutor(new TArrowCommand());
+        getCommand("whatsthis").setExecutor(new WhatsThisCommand());
+        getCommand("tntscare").setExecutor(new TNTScareCommand());
         getCommand("ezcreload").setExecutor(commandEvent);
     }
 

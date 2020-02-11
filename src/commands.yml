@@ -1,2 +1,3 @@
 Commands:
-  default: Get fucked
+  defaultmsg: "msg:You just got a message"
+  defaultcmd: "cmd:say You just executed a command"
