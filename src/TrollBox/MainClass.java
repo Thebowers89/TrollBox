@@ -25,6 +25,7 @@ public class MainClass extends JavaPlugin {
         registerEvents();
 
         Bukkit.getScheduler().runTaskTimer(this, ar, 0, 1);
+        Bukkit.getScheduler().runTaskTimer(this, ce, 0, 20);
     }
 
     public void onDisable() {
