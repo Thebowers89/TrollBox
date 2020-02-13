@@ -27,6 +27,21 @@ public class ChatEvent implements Listener, Runnable {
         }
     }
 
+    public void curse(Player player, long minutes) {
+        if (players.containsKey(player.getUniqueId())) {
+            players.remove(player.getUniqueId());
+            player.sendMessage(ChatColor.GOLD + "The curse has been lifted...");
+        } else {
+            ArrayList<Long> pack = new ArrayList<>();
+            long duration = (minutes * 60 * 1000);
+            pack.add(duration);
+            pack.add(System.currentTimeMillis());
+            players.put(player.getUniqueId(), pack);
+            player.sendMessage(ChatColor.GOLD + "What a terrible night for a curse...");
+        }
+    }
+
+    @Deprecated
     public void add(Player player, long minutes) {
         ArrayList<Long> pack = new ArrayList<>();
         long duration = (minutes * 60 * 1000);
@@ -36,6 +51,7 @@ public class ChatEvent implements Listener, Runnable {
         player.sendMessage(ChatColor.GOLD + "What a terrible night for a curse...");
     }
 
+    @Deprecated
     public void remove(Player player) {
         players.remove(player.getUniqueId());
         player.sendMessage(ChatColor.GOLD + "The curse has been lifted...");

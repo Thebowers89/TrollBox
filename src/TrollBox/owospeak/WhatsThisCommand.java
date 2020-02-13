@@ -13,13 +13,25 @@ import java.util.UUID;
 public class WhatsThisCommand implements CommandExecutor {
 
     public static final long defaultTime = 10;
+    public static final String permission = "TrollBox.whatsthis";
+
+    // TODO time to rewrite this motherfucker!
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (player.hasPermission("TrollBox.whatsthis") || player.isOp()) {
-                if (args.length == 1) {
+
+            // whatsthis [duration] --affects self
+            // whatsthis list --lists all affected players
+            // whatsthis target <player> [duration] --affects targeted player
+
+            if (player.hasPermission(permission) || player.isOp()) {
+                if (args.length == 0) {
+                    MainClass.ce.curse(player, defaultTime);
+                    return true;
+                } else if (args.length == 1) {
                     if (args[0].equalsIgnoreCase("list")) {
                         if (player.isOp()) {
                             player.sendMessage("List of players:");
@@ -29,70 +41,106 @@ public class WhatsThisCommand implements CommandExecutor {
                             }
                             return true;
                         }
-                    } else if (args[0].equalsIgnoreCase("all")) {
-                        if (player.isOp()) {
-                            for (Player p : Bukkit.getOnlinePlayers()) {
-                                MainClass.ce.add(p, defaultTime);
-                            }
-                            player.sendMessage("Now you've cursed everyone, good job...");
-                            return true;
-                        }
-                    } else if (args[0].equals("target")) {
-                        String targetPlayer = args[1];
-                        long time = defaultTime;
-                        if (args.length == 3) {
-                            try {
-                                time = Long.parseLong(args[2]);
-                            } catch (Exception e) {
-                                player.sendMessage("You need to enter a number!");
-                                return true;
-                            }
-                        }
-                        MainClass.ce.add(Bukkit.getPlayer(targetPlayer), time);
-                        return true;
                     } else {
                         long time;
                         try {
                             time = Long.parseLong(args[0]);
                         } catch (Exception e) {
-                            player.sendMessage(ChatColor.RED + "You need to enter a number");
-                            return true;
+                            time = defaultTime;
                         }
-                        MainClass.ce.add(player, time);
+                        MainClass.ce.curse(player, time);
                         return true;
                     }
+                } else if (args.length == 2) {
+                    if (args[0].equalsIgnoreCase("target")) {
+                        Player target;
+                        try {
+                            target = Bukkit.getPlayer(args[1]);
+                        } catch (Exception e) {
+                            player.sendMessage(ChatColor.RED + "That username is not found");
+                            return true;
+                        }
+                        MainClass.ce.curse(target, defaultTime);
+                        return true;
+                    } else {
+                        player.sendMessage(ChatColor.RED + "Invalid parameters: " + args[0]);
+                    }
+                } else if (args.length == 3) {
+                    if (args[0].equalsIgnoreCase("target")) {
+                        Player target;
+                        try {
+                            target = Bukkit.getPlayer(args[1]);
+                        } catch (Exception e) {
+                            player.sendMessage(ChatColor.RED + "That username is not found");
+                            return true;
+                        }
+                        long time;
+                        try {
+                            time = Long.parseLong(args[2]);
+                        } catch (Exception e) {
+                            time = defaultTime;
+                        }
+                        MainClass.ce.curse(target, time);
+                        return true;
+                    } else {
+                        player.sendMessage(ChatColor.RED + "Invalid parameters: " + args[0]);
+                    }
                 }
-                if (ChatEvent.players.containsKey(player.getUniqueId())) {
-                    MainClass.ce.remove(player);
-                    return true;
-                }
-                MainClass.ce.add(player, defaultTime);
+            } else {
+                // Making this silent so players think its broken
                 return true;
             }
-            return true;
         } else {
-            if (args[0].equals("target")) {
-                String targetPlayer = args[1];
-                long time = defaultTime;
-                if (args.length == 3) {
+            if (args.length == 1) {
+                if (args[0].equalsIgnoreCase("list")) {
+                    sender.sendMessage("List of players:");
+                    for (UUID p : ChatEvent.players.keySet()) {
+                        long duration = ChatEvent.players.get(p).get(0);
+                        sender.sendMessage(Bukkit.getPlayer(p).getName() + ": " + (duration / 60 / 1000) + " minutes");
+                    }
+                    return true;
+                }
+            } else if (args.length == 2) {
+                if (args[0].equalsIgnoreCase("target")) {
+                    Player target;
+                    try {
+                        target = Bukkit.getPlayer(args[1]);
+                    } catch (Exception e) {
+                        sender.sendMessage(ChatColor.RED + "That username is not found");
+                        return true;
+                    }
+                    MainClass.ce.curse(target, defaultTime);
+                    return true;
+                } else {
+                    sender.sendMessage(ChatColor.RED + "Invalid parameters: " + args[0]);
+                    return true;
+                }
+            } else if (args.length == 3) {
+                if (args[0].equalsIgnoreCase("target")) {
+                    Player target;
+                    try {
+                        target = Bukkit.getPlayer(args[1]);
+                    } catch (Exception e) {
+                        sender.sendMessage(ChatColor.RED + "That username is not found");
+                        return true;
+                    }
+                    long time;
                     try {
                         time = Long.parseLong(args[2]);
                     } catch (Exception e) {
-                        sender.sendMessage("You need to enter a number!");
-                        return true;
+                        time = defaultTime;
                     }
+                    MainClass.ce.curse(target, time);
+                    return true;
+                } else {
+                    sender.sendMessage(ChatColor.RED + "Invalid parameters: " + args[0]);
                 }
-                MainClass.ce.add(Bukkit.getPlayer(targetPlayer), time);
-                return true;
-            } else if (args[0].equals("list")) {
-                sender.sendMessage("List of players:");
-                for (UUID p : ChatEvent.players.keySet()) {
-                    long duration = ChatEvent.players.get(p).get(0);
-                    sender.sendMessage(Bukkit.getPlayer(p).getName() + ": " + (duration / 60 / 1000) + " minutes");
-                }
+            } else {
+                sender.sendMessage("[TrollBox] Hey man youre using this command wrong!");
                 return true;
             }
-            return false;
         }
+        return false;
     }
+
 }
