@@ -15,9 +15,6 @@ public class WhatsThisCommand implements CommandExecutor {
     public static final long defaultTime = 10;
     public static final String permission = "TrollBox.whatsthis";
 
-    // TODO time to rewrite this motherfucker!
-
-
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (sender instanceof Player) {
