@@ -41,22 +41,6 @@ public class ChatEvent implements Listener, Runnable {
         }
     }
 
-    @Deprecated
-    public void add(Player player, long minutes) {
-        ArrayList<Long> pack = new ArrayList<>();
-        long duration = (minutes * 60 * 1000);
-        pack.add(duration);
-        pack.add(System.currentTimeMillis());
-        players.put(player.getUniqueId(), pack);
-        player.sendMessage(ChatColor.GOLD + "What a terrible night for a curse...");
-    }
-
-    @Deprecated
-    public void remove(Player player) {
-        players.remove(player.getUniqueId());
-        player.sendMessage(ChatColor.GOLD + "The curse has been lifted...");
-    }
-
     @Override
     public void run() {
         ArrayList<UUID> temp = new ArrayList<>();
