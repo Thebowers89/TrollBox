@@ -16,3 +16,6 @@ commands:
   ezcreload:
     usage: /ezcreload
     description: Reloads the EasyCommands commands file.
+  explode:
+    usage:
+    description:

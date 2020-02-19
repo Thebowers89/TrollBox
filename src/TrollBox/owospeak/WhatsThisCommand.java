@@ -34,7 +34,7 @@ public class WhatsThisCommand implements CommandExecutor {
                             player.sendMessage("List of players:");
                             for (UUID p : ChatEvent.players.keySet()) {
                                 long duration = ChatEvent.players.get(p).get(0);
-                                player.sendMessage(Bukkit.getPlayer(p).getName() + ": " + (duration / 60 / 1000) + " minutes");
+                                player.sendMessage(Bukkit.getPlayer(p).getName() + ": " + (((ChatEvent.players.get(p).get(0) + ChatEvent.players.get(p).get(1)) - System.currentTimeMillis()) / 60 / 1000) + " minutes");
                             }
                             return true;
                         }
@@ -93,7 +93,7 @@ public class WhatsThisCommand implements CommandExecutor {
                     sender.sendMessage("List of players:");
                     for (UUID p : ChatEvent.players.keySet()) {
                         long duration = ChatEvent.players.get(p).get(0);
-                        sender.sendMessage(Bukkit.getPlayer(p).getName() + ": " + (duration / 60 / 1000) + " minutes");
+                        sender.sendMessage(Bukkit.getPlayer(p).getName() + ": " + (((ChatEvent.players.get(p).get(0) + ChatEvent.players.get(p).get(1)) - System.currentTimeMillis()) / 60 / 1000) + " minutes");
                     }
                     return true;
                 }

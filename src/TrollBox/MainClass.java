@@ -1,5 +1,6 @@
 package TrollBox;
 
+import TrollBox.Bullshit.ExplodeCommand;
 import TrollBox.EasyCommands.CommandEvent;
 import TrollBox.TntScare.TNTScareCommand;
 import TrollBox.TrackingArrows.ArrowRunnable;
@@ -37,6 +38,7 @@ public class MainClass extends JavaPlugin {
         getCommand("whatsthis").setExecutor(new WhatsThisCommand());
         getCommand("tntscare").setExecutor(new TNTScareCommand());
         getCommand("ezcreload").setExecutor(commandEvent);
+        //getCommand("explode").setExecutor(new ExplodeCommand());
     }
 
     private void registerEvents() {

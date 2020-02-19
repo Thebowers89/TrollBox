@@ -6,14 +6,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Map;
 
 public class CommandEvent implements Listener, CommandExecutor {
 
@@ -25,8 +23,10 @@ public class CommandEvent implements Listener, CommandExecutor {
 
     /*
         PREFIXES:
-            msg:
-            cmd:
+            msg: - Message
+            cmd: - Command
+            con: - Console
+            chn: - Chain
      */
 
     @EventHandler
@@ -42,7 +42,6 @@ public class CommandEvent implements Listener, CommandExecutor {
             } else if (prefix.equals("cmd")) {
                 e.getPlayer().performCommand(output);
             }
-
         }
     }
 
@@ -50,49 +49,47 @@ public class CommandEvent implements Listener, CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if (commandSender instanceof Player) {
-            if (strings.length >= 1 && strings[0].equals("perms")) {
-                commandSender.sendMessage(reloadPermission);
-                return true;
-            }
-            if (strings.length >= 2) {
-                String operator = strings[0];
-                String selection = strings[1];
-                if (operator.equals("list")) {
-                    if (selection.equals("messages")) {
-                        commandSender.sendMessage("List of message commands:");
-                        for (String key : commands.keySet()) {
-                            String cmd = commands.get(key);
-                            String prefix = cmd.substring(0, 3);
-                            if (prefix.equals("msg")) {
-                                commandSender.sendMessage("     " + key + " : " + cmd);
-                            }
+        if (strings.length >= 1 && strings[0].equals("perms")) {
+            commandSender.sendMessage(reloadPermission);
+            return true;
+        }
+        if (strings.length >= 2) {
+            String operator = strings[0];
+            String selection = strings[1];
+            if (operator.equals("list")) {
+                if (selection.equals("messages")) {
+                    commandSender.sendMessage("List of message commands:");
+                    for (String key : commands.keySet()) {
+                        String cmd = commands.get(key);
+                        String prefix = cmd.substring(0, 3);
+                        if (prefix.equals("msg")) {
+                            commandSender.sendMessage("     " + key + " : " + cmd);
                         }
-                        return true;
-                    } else if (selection.equals("commands")) {
-                        commandSender.sendMessage("List of command commands:");
-                        for (String key : commands.keySet()) {
-                            String cmd = commands.get(key);
-                            String prefix = cmd.substring(0, 3);
-                            if (prefix.equals("cmd")) {
-                                commandSender.sendMessage("     " + key + " : " + cmd);
-                            }
-                        }
-                        return true;
-                    } else {
-                        commandSender.sendMessage("List of all commands:");
-                        for (String key : commands.keySet()) {
-                            commandSender.sendMessage("     " + key + " : " + commands.get(key));
-                        }
-                        return true;
                     }
+                    return true;
+                } else if (selection.equals("commands")) {
+                    commandSender.sendMessage("List of command commands:");
+                    for (String key : commands.keySet()) {
+                        String cmd = commands.get(key);
+                        String prefix = cmd.substring(0, 3);
+                        if (prefix.equals("cmd")) {
+                            commandSender.sendMessage("     " + key + " : " + cmd);
+                        }
+                    }
+                    return true;
+                } else {
+                    commandSender.sendMessage("List of all commands:");
+                    for (String key : commands.keySet()) {
+                        commandSender.sendMessage("     " + key + " : " + commands.get(key));
+                    }
+                    return true;
                 }
             }
-            if (commandSender.isOp() || commandSender.hasPermission(reloadPermission)) {
-                commandSender.sendMessage("Reloading commands file... Check the console for errors...");
-                reload();
-                return true;
-            }
+        }
+        if (commandSender.isOp() || commandSender.hasPermission(reloadPermission)) {
+            commandSender.sendMessage("Reloading commands file... Check the console for errors...");
+            reload();
+            return true;
         }
         return false;
     }

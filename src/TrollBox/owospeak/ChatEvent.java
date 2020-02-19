@@ -27,6 +27,7 @@ public class ChatEvent implements Listener, Runnable {
         }
     }
 
+    // Toggles a players cursed state
     public void curse(Player player, long minutes) {
         if (players.containsKey(player.getUniqueId())) {
             players.remove(player.getUniqueId());
