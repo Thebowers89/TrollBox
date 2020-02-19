@@ -27,6 +27,7 @@ public class CommandEvent implements Listener, CommandExecutor {
             cmd: - Command
             con: - Console
             chn: - Chain
+            there is going to be more
      */
 
     @EventHandler
